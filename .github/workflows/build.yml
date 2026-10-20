@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     env:
-      THEOS: ${{ runner.temp }}/theos
+      THEOS: /tmp/stroke-layout-theos
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
