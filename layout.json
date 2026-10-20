@@ -1,0 +1,17 @@
+{
+  "status": "design-only; native key mapping pending device report",
+  "device": "iPhone 14",
+  "ios": "16.0.3",
+  "jailbreak": "Dopamine roothide",
+  "input": "Apple Chinese Stroke",
+  "rows": [
+    ["wildcard", "horizontal", "vertical", "left-falling", "delete"],
+    ["punctuation", "right-falling", "turning", "word-separator", "ABC"],
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+    ["globe", "space", "return"]
+  ],
+  "bottomWidths": [0.2, 0.6, 0.2],
+  "preserve": ["native stroke composition", "native candidates", "native return key behavior"],
+  "pending": ["ABC action semantics and return path", "globe menu behavior", "native geometry and key identifiers"],
+  "deferred": ["clipboard", "one-handed mode", "custom cursor gestures"]
+}
