@@ -1,0 +1,56 @@
+name: Build RootHide diagnostic
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      THEOS: ${{ runner.temp }}/theos
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          brew install make ldid dpkg
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-path
+
+      - name: Fetch RootHide Theos
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --recursive --depth 1 https://github.com/roothide/theos.git "$THEOS"
+          git -C "$THEOS" rev-parse HEAD
+
+      - name: Build diagnostic package
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f Makefile
+          gmake package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide 2>&1 | tee build.log
+          find packages -name '*.deb' -print
+
+      - name: Upload deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: StrokeLayoutDiagnostic-roothide
+          path: packages/*.deb
+          if-no-files-found: error
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: ignore
